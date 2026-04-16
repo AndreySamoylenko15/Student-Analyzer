@@ -1,52 +1,68 @@
+import json
+
 students = [
     {'name': 'Oleg', 'age': 18},
     {'name': 'Anna', 'age': 19},
-    {'name': 'Ivan', 'age': 20}]
-
-
-def get_names(students):
-    result = []
-
-    for student in students:
-        result.append(student['name'])
-
-    return result
-
-
-def count_older_than_18(students):
-    count = 0
-
-    for student in students:
-        if student['age'] > 18:
-            count += 1
-
-    return count
+    {'name': 'Ivan', 'age': 20}
+]
+def show_students():
+    with open('students.json', 'r', encoding='utf-8') as file:
+        data = json.load(file)
+    for student in data:
+        print(student['name'], student['age'])
 
 
 
-def get_names_older_than_18(students):
-    result = []
+def add_student():
+    with open('students.json', 'r', encoding='utf-8') as file:
+        data = json.load(file)
+    name = input('Enter name: ')
+    age = int(input('Enter age: '))
+    data.append({'name': name , 'age': age})
 
-    for student in students:
-        if student['age'] > 18:
-            result.append(student['name'])
+    with open('students.json', 'w', encoding='utf-8') as file:
+        json.dump(data, file, ensure_ascii=False, indent=4)
 
-    return result
+def count_students():
+    with open('students.json', 'r', encoding='utf-8') as file:
+        data = json.load(file)
+    return len(data)
 
 
-def find_oldest_student(students):
+def find_oldest_student():
+    with open('students.json', 'r', encoding='utf-8') as file:
+        data = json.load(file)
     max_age = 0
     max_name = ''
-
-    for student in students:
+    for student in data:
         if student['age'] > max_age:
             max_age = student['age']
             max_name = student['name']
+    return max_name, max_age
 
-    return  max_name, max_age
+
+choice=''
 
 
-print('Names:', get_names(students))
-print('Older than 18 count:',count_older_than_18(students))
-print('Names older than 18:', get_names_older_than_18(students))
-print('Oldest student:',find_oldest_student(students))
+while choice!= '0':
+    print('1 - Show students')
+    print('2 - Add student')
+    print('3 - Count students')
+    print('4 - Find oldest student')
+    print('0 - Exit')
+
+    choice = input('Choose option: ')
+
+
+    if choice == '1':
+        show_students()
+    elif choice == '2':
+        add_student()
+    elif choice == '0':
+        print('Goodbye')
+    elif choice == '3':
+        print('Students count:', count_students())
+    elif choice == '4':
+        print('Oldest student:', find_oldest_student())
+    else:
+        print('Invalid choice')
